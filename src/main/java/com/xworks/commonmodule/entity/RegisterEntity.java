@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.validation.annotation.Validated;
 
@@ -23,6 +24,8 @@ import lombok.ToString;
 @Validated
 @ToString
 public class RegisterEntity implements Serializable {
+
+	private static final Logger log = Logger.getLogger(RegisterEntity.class);
 
 	@Id
 	@GenericGenerator(name = "reference", strategy = "increment")
@@ -58,7 +61,7 @@ public class RegisterEntity implements Serializable {
 	private Integer noOfAttempts;
 
 	public RegisterEntity() {
-		System.out.println("created :" + this.getClass().getSimpleName());
+		log.info("created :" + this.getClass().getSimpleName());
 	}
 
 }

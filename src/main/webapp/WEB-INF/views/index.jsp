@@ -61,7 +61,7 @@ ul:after{display:block;height:21px; background:blue;margin-top:20px;}
 
 	<div class="w3-container" style="padding: 32px">
 
-		<img alt="Xworkz logo" src="/com.xworks.commonmodule/xworkz.jpg" width=18% style="margin:0px 50px">
+		<img alt="Xworkz logo" src="/com.xworks.commonmodule/xwrokz.jpg" width=18% style="margin:0px 50px">
 		<h3 style="margin:0px 70px"><u>X-workz ODC</u></h3>
 		
 

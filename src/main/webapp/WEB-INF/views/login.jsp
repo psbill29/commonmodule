@@ -178,13 +178,14 @@ a {
 			</table>
 
 			<td><input type="submit" value="Login" class="registerbtn"></td>
+			<a href="/com.xworks.commonmodule/forgot"
+						method="post" class="w3-bar-item w3-button">Forgot Password
+					</a>
 			
 
 </div>
 		</form>
-		<a href="/com.xworks.commonmodule/forgot"
-						method="post" class="w3-bar-item w3-button">Forgot Password
-					</a>
+		
 					
 					<h3><u style="color:red;">${notValidEmail}</u></h3>
 					<h3><u style="color:red;">${userNotBlocked}</u></h3>

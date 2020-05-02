@@ -2,6 +2,7 @@ package com.xworks.commonmodule.controller;
 
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -19,6 +20,8 @@ import com.xworks.commonmodule.service.ServiceRegister;
 @RequestMapping("/")
 public class RegisterController {
 
+	private static final Logger log = Logger.getLogger(RegisterController.class);
+
 	@Autowired
 	private ServiceRegister serviceRegister;
 
@@ -26,7 +29,9 @@ public class RegisterController {
 	private ForgotPasswordService forgotPasswordService;
 
 	public RegisterController() {
-		System.out.println("invoked controller :" + this.getClass().getSimpleName());
+		// System.out.println("invoked controller :" +
+		// this.getClass().getSimpleName());
+		log.info("invoked Controller :" + this.getClass().getSimpleName());
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -56,15 +61,18 @@ public class RegisterController {
 		String returnValue = this.serviceRegister.validateUser(registerDTO, model);
 		try {
 			if (returnValue.equals("userDetails")) {
-				System.out.println("invoking register from controller:");
-				System.out.println("model attribute:" + registerDTO);
+				// System.out.println("invoking register from controller:");
+				log.info("invoking register from controller:");
+				// System.out.println("model attribute:" + registerDTO);
+				log.info("model attribute :" + registerDTO);
 				model.addAttribute("Message", "User Registered successfuly");
 				return "userDetails";
 			}
 			return "register";
 		} catch (Exception e) {
-			System.out.println("exception found in Register Controller...");
-			e.printStackTrace();
+			// System.out.println("exception found in Register Controller...");
+			log.info("exception found in Register Controller...");
+			log.error(e.getMessage(), e);
 		}
 		return null;
 
@@ -82,31 +90,39 @@ public class RegisterController {
 
 		String emailPasswordCheck = null;
 		emailPasswordCheck = this.serviceRegister.validateLogin(registerDTO, model);
-		System.out.println("value of emailCheck at controller: " + emailPasswordCheck);
+		// System.out.println("value of emailCheck at controller: " +
+		// emailPasswordCheck);
+		log.info("value of emailCheck at controller: " + emailPasswordCheck);
 		try {
 			if ("allow".equals(emailPasswordCheck)) {
-				System.out.println("invoking login:");
-				System.out.println("model attribute:" + registerDTO);
+				// System.out.println("invoking login:");
+				log.info("invoking login:");
+				// System.out.println("model attribute:" + registerDTO);
+				log.info("model attribute: " + registerDTO);
 
 				model.addAttribute("Message", "User loggedIn succefully:\n" + "User.ID :" + registerDTO.getEmail()
 						+ "\n" + "Password: " + registerDTO.getPassword());
 				return "home";
 
 			} else if ("somethingWrong".equals(emailPasswordCheck)) {
-				System.out.println("either password or email is wrong...");
+				// System.out.println("either password or email is wrong...");
+				log.error("either password or email is wrong...");
 				model.addAttribute("Message", "Please check entered Email and Password ");
 				return "login";
 			} else if ("blocked".equals(emailPasswordCheck)) {
-				System.out.println("3 attempts done...");
+				// System.out.println("3 attempts done...");
+				log.error("3 attempts done...");
 				model.addAttribute("Message", "You have made already 3 attempts, Please try resetting password");
 				return "login";
 			} else if ("checkEmail".equals(emailPasswordCheck))
-				System.out.println("check entered email adress...");
+				// System.out.println("check entered email adress...");
+				log.error("check entered email adress...");
 			model.addAttribute("Message", "Please check email id entered and try again");
 			return "login";
 		} catch (Exception e) {
-			System.out.println("Exception found in the login controller");
-			e.printStackTrace();
+			// System.out.println("Exception found in the login controller");
+			log.info("Exception found in the login controller");
+			log.error(e.getMessage(), e);
 		}
 		return null;
 
@@ -121,7 +137,7 @@ public class RegisterController {
 	@RequestMapping(value = "/forgotPass", method = RequestMethod.POST)
 	public String resettingPassword(@Valid @ModelAttribute("User") RegisterDTO registerDTO, BindingResult result,
 			Model model) {
-		System.out.println("inside the controller");
+		log.info("inside the controller");
 
 		// if (result.hasErrors()) {
 		// return "forgot";
@@ -131,15 +147,15 @@ public class RegisterController {
 		String resetRequired = this.forgotPasswordService.validateUserForPasswordReset(registerDTO, model);
 		try {
 			if ("doneReset".equals(resetRequired)) {
-				System.out.println("going forward to validate and register :");
-				System.out.println("model attribute:" + registerDTO);
+				log.info("going forward to validate and register :");
+				log.info("model attribute: " + registerDTO);
 				model.addAttribute("restMessage", "Password reset successfuly");
 				return "newDetails";
 			} else if ("invalid".equals(resetRequired)) {
-				System.out.println("user doesnt exist: ");
+				log.info("user doesnt exist: ");
 				model.addAttribute("doestNotExist", "email doesnt exist");
 			} else if ("tryPassword".equals(resetRequired)) {
-				System.out.println("inside controller for resetting the password: user can try with password");
+				log.info("inside controller for resetting the password: user can try with password");
 				model.addAttribute("userNotBlocked", "       try using password..");
 
 				return "login";
@@ -149,8 +165,8 @@ public class RegisterController {
 			}
 			return "login";
 		} catch (Exception e) {
-			System.out.println("found exception in Forgot Password module...");
-			e.printStackTrace();
+			log.info("found exception in Forgot Password module...");
+			log.error(e.getMessage(), e);
 		}
 		return null;
 
