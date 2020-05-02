@@ -14,6 +14,4 @@ public interface RegisterDAO {
 
 	public Integer addAttempts(String loginEmail, int noOfAttempts);
 
-	public Integer checkAttempts(String loginEmail);
-
 }

@@ -76,11 +76,9 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 						System.out.println();
 						log.info("passed to entity :" + newPassword);
 
-						log.info("about to enter resetPassword method in DAO ");
-						this.forgotPasswordDAO.resetPasswrod(registerEntity);
-						
-						log.info("about to enter resetNoOfAttempts method in DAO ");
-						this.forgotPasswordDAO.resetNoOfAttempts(registerEntity.getEmail(), model);
+						log.info(
+								"about to enter resetPasswordAndCounts method in DAO to reset password as well as attempts ");
+						this.forgotPasswordDAO.resetPasswordAndCounts(registerEntity);
 
 						return "doneReset";
 

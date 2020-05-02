@@ -60,7 +60,7 @@ public class ForgotPasswordDAOImpl implements ForgotPasswordDAO {
 		return null;
 	}
 
-	public boolean resetPasswrod(RegisterEntity registerEntity) {
+	public boolean resetPasswordAndCounts(RegisterEntity registerEntity) {
 		log.info("inside the DAO under Resetting the password: " + this.getClass().getSimpleName());
 
 		try {
@@ -69,24 +69,17 @@ public class ForgotPasswordDAOImpl implements ForgotPasswordDAO {
 			session.beginTransaction();
 
 			String updatePassHQL = "update from RegisterEntity set password='" + registerEntity.getPassword()
-					+ "' where email='" + registerEntity.getEmail() + "'";
+					+ "',decoded='" + registerEntity.getDecodedPass() + "',noOfAttempts='"
+					+ registerEntity.getNoOfAttempts() + "' where email='" + registerEntity.getEmail() + "'";
 			log.info("HQL query created to resent the password :" + updatePassHQL);
 
-			String updateDecodedPassHQL = "update from RegisterEntity set decoded='" + registerEntity.getDecodedPass()
-					+ "' where email='" + registerEntity.getEmail() + "'";
-			log.info("HQL query created to reset the Decodedpassword :" + updateDecodedPassHQL);
-
 			Query passUpdateQuery = session.createQuery(updatePassHQL);
-			log.info("Query created under reset password in DAO:" + passUpdateQuery);
+			log.info("Query created under reset password and number of attempts in DAO:" + passUpdateQuery);
 
-			Query decodedPassUpdateQuery = session.createQuery(updateDecodedPassHQL);
-			log.info("Query created under reset password in DAO:" + decodedPassUpdateQuery);
-
-			log.info("about to update password and decoded pass..");
+			log.info("about to update password, decoded pass and no.of attempts..");
 			passUpdateQuery.executeUpdate();
-			decodedPassUpdateQuery.executeUpdate();
 			session.getTransaction().commit();
-			log.info("committed unsder reset password with values :" + registerEntity.getPassword());
+			log.info("committed unsder resetPasswordAndCounts with values :" + registerEntity.getPassword());
 
 		} catch (Exception e) {
 			session.getTransaction().rollback();
@@ -98,37 +91,6 @@ public class ForgotPasswordDAOImpl implements ForgotPasswordDAO {
 		}
 		return false;
 
-	}
-
-	public boolean resetNoOfAttempts(String email, Model model) {
-
-		log.info("invoked the reset attempts method");
-
-		try {
-			session = factory.openSession();
-			session.beginTransaction();
-			Integer noOfAttempts = 0;
-
-			String hql = "update RegisterEntity set noOfAttempts='" + noOfAttempts + "'where email='" + email + "'";
-			log.info("HQL prepared to reset the attempts :" + hql);
-
-			Query attemptQuery = session.createQuery(hql);
-			log.info("Query created to reset the attempts :" + attemptQuery);
-
-			Integer count = attemptQuery.executeUpdate();
-			log.info("this is check about attempt flush : " + count);
-			session.getTransaction().commit();
-
-		} catch (Exception e) {
-			session.getTransaction().rollback();
-			log.error(e.getMessage(), e);
-		} finally {
-			if (Objects.nonNull(session))
-				log.info("Session closed insode the resetPass finnaly block");
-			session.close();
-		}
-
-		return false;
 	}
 
 }

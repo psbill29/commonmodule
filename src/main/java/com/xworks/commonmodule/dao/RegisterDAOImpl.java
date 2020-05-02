@@ -117,49 +117,6 @@ public class RegisterDAOImpl implements RegisterDAO {
 		return null;
 	}
 
-	public Integer checkAttempts(String loginEmail) {
-		log.info("inside the checkAttempts: ");
-		Session session = null;
-		Integer attemptCount = 0;
-		try {
-			session = factory.openSession();
-			session.beginTransaction();
-
-			// to check attempts more than 3 times
-
-			String attemptsHql = "from RegisterEntity where email='" + loginEmail + "'";
-			log.info("HQL query to provide further to QUERY :" + attemptsHql);
-
-			Query attemptQuery = session.createQuery(attemptsHql);
-			log.info("Query created :" + attemptQuery);
-
-			registerEntity = (RegisterEntity) attemptQuery.uniqueResult();
-			log.info("value of register entity before assigning to attemptCount :" + registerEntity);
-
-			if (Objects.isNull(registerEntity)) {
-				log.info("attempts value inside ISNULL method under DAO :" + attemptCount);
-				return 0;
-			}
-
-			attemptCount = registerEntity.getNoOfAttempts();
-			log.info("value of attempts under DAO before ISNULL :" + attemptCount);
-
-			return attemptCount;
-
-		} catch (Exception e) {
-			session.getTransaction().rollback();
-			log.error(e.getMessage(), e);
-
-		} finally {
-			if (Objects.nonNull(session)) {
-				session.close();
-				log.info("session closed in finnaly fro add attempts");
-			}
-		}
-		return attemptCount;
-
-	}
-
 	public Integer addAttempts(String loginEmail, int noOfAttempts) {
 
 		log.info("inside the addAttempts: ");
@@ -179,7 +136,7 @@ public class RegisterDAOImpl implements RegisterDAO {
 			Integer totalAttempts = query.executeUpdate();
 			log.info("return query true or false " + query);
 
-			log.info("loginemail: " + loginEmail + "\n" +"\t"+"\t"+ "nnoOfAttempts :" + totalAttempts);
+			log.info("loginemail: " + loginEmail + "\n" + "\t" + "\t" + "nnoOfAttempts :" + totalAttempts);
 			session.getTransaction().commit();
 			return totalAttempts;
 

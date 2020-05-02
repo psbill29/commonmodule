@@ -108,19 +108,25 @@ public class ServiceRegisterImpl implements ServiceRegister {
 	}
 
 	public String validateLogin(RegisterDTO registerDTO, Model model) {
+
+		log.info("inside the Validate login under ServiceDAOImpl :" + this.getClass().getSimpleName());
+		Integer attemptCount = 0;
 		try {
 			log.info("inside validateLogin under Service" + this.getClass().getSimpleName());
 			RegisterEntity registerEntity = null;
 			boolean isPassMatch = false;
-			Integer attemptCount = this.registerDAO.checkAttempts(registerDTO.getEmail());
-			log.info("value of checkAttempts :" + attemptCount);
 
 			registerEntity = this.registerDAO.validateEmail(registerDTO, model);
 			if (Objects.isNull(registerEntity)) {
 				return "checkEmail";
 			}
+
+			attemptCount = registerEntity.getNoOfAttempts();
+			log.info("thsi is the login attempts from the DB :" + attemptCount);
+
 			log.info("this is under service got from DAO registerEntity :" + registerEntity);
 			System.out.println();
+
 			log.info("details entered by USER :" + registerDTO);
 			BCryptPasswordEncoder decoder = new BCryptPasswordEncoder();
 

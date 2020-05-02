@@ -8,8 +8,6 @@ public interface ForgotPasswordDAO {
 
 	public RegisterEntity checkUserDetails(String email, Model model);
 
-	public boolean resetPasswrod(RegisterEntity registerEntity);
-
-	public boolean resetNoOfAttempts(String email, Model model);
+	public boolean resetPasswordAndCounts(RegisterEntity registerEntity);
 
 }
