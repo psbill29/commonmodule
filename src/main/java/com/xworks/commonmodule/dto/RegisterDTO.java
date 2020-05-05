@@ -1,6 +1,5 @@
 package com.xworks.commonmodule.dto;
 
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -13,13 +12,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Setter
 @Getter
 @ToString
 @Validated
 public class RegisterDTO {
 
+	@NotEmpty(message="please enter your name")
+	private String user_name;
+	
 	@NotEmpty(message = "user id cannot be empty")
 	@Size(min = 3, max = 10, message = "Please enter min of 3 and max of 10 characters")
 	private String user_id;
@@ -33,6 +34,7 @@ public class RegisterDTO {
 	private String ph_no;
 
 	private String course;
+
 	private String entry;
 	private String password;
 	private Integer noOfAttempts;

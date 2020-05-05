@@ -138,35 +138,40 @@ a {
 
 	<h3>${resetMessage}</h3>
 
+	<h3>Password Reset</h3>
 	<div class="container">
-		<a href="/com.xworks.commonmodule/loginPage" method="post"
-			class="w3-bar-item w3-button">Log-In </a> <br>
+
 
 
 		<table>
 			<tr>
-				<td>User ID :</td>
+				<td><b>User ID :</b></td>
 				<td><show:out value="${user_id}" /></td>
 			</tr>
 
 			<tr>
-				<td>Email :</td>
+				<td><b>Email :</b></td>
 				<td><show:out value="${email }" /></td>
 			</tr>
 
 			<tr>
-				<td>Generate Password :</td>
+				<td><b>Generate Password :</b></td>
 				<td><show:out value="${newPassword }" /></td>
 			</tr>
 		</table>
+
 	</div>
 
 	<br>
+
+	<br>
+	<a href="/com.xworks.commonmodule/loginPage" method="post"
+		class="registerbtn">Log In</a>
 	<br>
 	<br>
 	<br>
 	<br>
-	<br>
+	<br><br>
 
 	<footer class="w3-center w3-light-grey w3-padding-32">
 	<h3 class="w3-center">About Xworkz</h3>

@@ -166,8 +166,8 @@ a {
 					<td><show:out value="${course }" /></td>
 				</tr>
 				<tr>
-					<td>Generate Password :</td>
-					<td><show:out value="${password }" /></td>
+					<td>Generated Password :</td>
+					<td><show:out value="${sent }" /></td>
 				</tr>
 			</table>
 		</form:form>
