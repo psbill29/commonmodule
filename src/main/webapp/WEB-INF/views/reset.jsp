@@ -1,16 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="show"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Successs</title>
+<title>Reset Password</title>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
 <style>
 body {
 	font-family: "Times New Roman", Georgia, Serif;
@@ -21,8 +22,6 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: "Times New Roman", Georgia, Serif;
 	letter-spacing: 5px;
 	padding: 10px;
-	text-align: center;
-	color: green;
 }
 
 * {
@@ -88,7 +87,6 @@ a {
 	text-align: center;
 }
 </style>
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -100,11 +98,8 @@ a {
 	font-size: 20px;
 }
 </style>
-
-
 </head>
 <body>
-
 	<div class="w3-top">
 		<div class="w3-bar w3-white w3-padding w3-card"
 			style="letter-spacing: 4px;">
@@ -130,49 +125,65 @@ a {
 			</div>
 		</div>
 	</div>
-
-	<br>
 	<br>
 	<br>
 	<br>
 
-	<h3>Password Reset</h3>
+
+	<h3>Set Password</h3>
+	<form:form action="/com.xworks.commonmodule/setPass"
+		modelAttribute="reset" method="post">
+		<div class="container">
+			<table>
+
+				<tr>
+					<td>Email</td>
+					<td><form:input path="email" placeholder="Enter Email" /></td>
+					<td><form:errors path="email" cssClass="error" /></td>
+				</tr>
+				<tr>
+					<td>One Time Password</td>
+					<td><form:input path="password" placeholder="Old Password" /></td>
+					<td><form:errors path="password" cssClass="error" /></td>
+				</tr>
+				<tr>
+					<td>New Password</td>
+					<td><form:input path="newPassword" placeholder="New Password" /></td>
+					<td><form:errors path="newPassword" cssClass="error" /></td>
+				</tr>
+
+				<tr>
+					<td><input type="submit" value="Reset Password"
+						class="registerbtn"></td>
+
+				</tr>
+			</table>
+		</div>
+	</form:form>
+
+
+	<br>
+	<br>
+	<br>
+
+
+
+
+
+
+
+
+
 	<div class="container">
+		<h5 style="color: red;">${set}</h5>
+		<h5 style="color: red;">
+			<a href="/com.xworks.commonmodule/forgot"> ${forgot}</a>
+		</h5>
 
-
-
-		<table>
-			<tr>
-				<td><b>User ID :</b></td>
-				<td><show:out value="${user_id}" /></td>
-			</tr>
-
-			<tr>
-				<td><b>Email :</b></td>
-				<td><show:out value="${email }" /></td>
-			</tr>
-
-			<tr>
-				<td><b>Generate Password :</b></td>
-				<td><show:out value="${newPassword }" /></td>
-			</tr>
-		</table>
-
+		<h5 style="color: red;">${invalidPass}</h5>
+		<h5 style="color: red;">${invalidEmail}</h5>
 	</div>
 
-	<br>
-
-	<br>
-	<a href="/com.xworks.commonmodule/loginPage" method="post"
-		class="registerbtn">Log In</a>
-	<a href="/com.xworks.commonmodule/reset" method="post"
-		class="registerbtn">Reset Password</a>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 
 	<footer class="w3-center w3-light-grey w3-padding-32">
 	<h3 class="w3-center">About Xworkz</h3>
@@ -183,9 +194,4 @@ a {
 	</p>
 	</footer>
 </body>
-
-
-
-
-
 </html>

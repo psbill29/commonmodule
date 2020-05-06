@@ -155,6 +155,12 @@ a {
 	<h3>
 		<u style="color: red;">${enterValidEmail}</u>
 	</h3>
+	<h3>
+		<u style="color: red;">${lastAttempt}</u>
+	</h3>
+	<h3>
+		<u style="color: green;">${set}</u>
+	</h3>
 	</header>
 
 
@@ -184,19 +190,21 @@ a {
 				class="w3-bar-item w3-button">Forgot Password </a>
 
 
+
 		</div>
 	</form>
 
-
-	<h3>
+	<h4>
 		<u style="color: red;">${notValidEmail}</u>
-	</h3>
-	<h3>
+	</h4>
+	<h4>
 		<u style="color: red;">${userNotBlocked}</u>
-	</h3>
-	<h3>
+	</h4>
+	<h4>
 		<u style="color: red;">${doestNotExist}</u>
-	</h3>
+	</h4>
+
+
 
 
 

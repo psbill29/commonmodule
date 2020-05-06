@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.xworks.commonmodule.dto.RegisterDTO;
-import com.xworks.commonmodule.entity.RegisterEntity;
 import com.xworks.commonmodule.service.ForgotPasswordService;
 
 @Component
@@ -51,7 +49,7 @@ public class ForgotPasswordController {
 				log.info("going forward to validate and register :");
 				log.info("model attribute: " + registerDTO);
 				model.addAttribute("restMessage",
-						"Password reset successfuly and has been sent to registered Email adress");
+						"Password reset successfuly and One Time Password has been sent to registered Email adress, please set the new Password");
 				return "newDetails";
 			} else if ("invalid".equals(resetRequired)) {
 				log.info("user doesnt exist: ");
@@ -61,14 +59,51 @@ public class ForgotPasswordController {
 				model.addAttribute("userNotBlocked", "       try using password..");
 
 				return "login";
-			} else if ("tryLogin".equals(resetRequired)) {
-				model.addAttribute("userNotBlocked", "try logging in using the password");
-				return "login";
 			}
 			return "login";
 		} catch (Exception e) {
 			log.info("found exception in Forgot Password module...");
 			log.error(e.getMessage(), e);
+		}
+		return null;
+
+	}
+
+	@RequestMapping("/reset")
+	public String userResetPage(Model model) {
+		model.addAttribute("reset", new RegisterDTO());
+		return "reset";
+	}
+
+	@RequestMapping("/setPass")
+	public String userResetDone(Model model) {
+		model.addAttribute("reset", new RegisterDTO());
+		return "reset";
+	}
+
+	@RequestMapping(value = "/setPass", method = RequestMethod.POST)
+	public String setUserPassword(@Valid @ModelAttribute("reset") RegisterDTO registerDTO, BindingResult bindingResult,
+			Model model) {
+		log.info("inside the setPass controller..");
+		// if(bindingResult.hasErrors()){
+		// return "reset";
+		// }
+
+		String value = this.forgotPasswordService.setNewPassword(registerDTO, model);
+		try {
+			if ("userPasswordSet".equals(value)) {
+				model.addAttribute("set", "password has been reset, you can now log-in using new password");
+				return "login";
+			} else if ("invalidPassword".equals(value)) {
+				model.addAttribute("invalidPass",
+						"The password you have entered is invalid, please try with correct password");
+				return "reset";
+			} else
+				model.addAttribute("invalidEmail", "Please enter valid email id");
+			return "reset";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 

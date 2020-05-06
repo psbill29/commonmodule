@@ -38,6 +38,7 @@ public class RegisterDTO {
 	private String entry;
 	private String password;
 	private Integer noOfAttempts;
+	private String newPassword;
 
 	public RegisterDTO() {
 		System.out.println("created :" + this.getClass().getSimpleName());

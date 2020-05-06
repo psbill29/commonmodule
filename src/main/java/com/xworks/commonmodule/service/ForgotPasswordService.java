@@ -7,5 +7,7 @@ import com.xworks.commonmodule.dto.RegisterDTO;
 public interface ForgotPasswordService {
 
 	public String validateUserForPasswordReset(RegisterDTO registerDTO, Model model);
+	
+	public String setNewPassword(RegisterDTO registerDTO,Model model);
 
 }

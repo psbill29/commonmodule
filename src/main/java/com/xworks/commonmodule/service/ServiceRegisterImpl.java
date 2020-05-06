@@ -1,18 +1,12 @@
 package com.xworks.commonmodule.service;
 
 import java.util.Objects;
-import java.util.Random;
-
-import javax.mail.Message;
-import javax.mail.internet.MimeMessage;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -31,6 +25,9 @@ public class ServiceRegisterImpl implements ServiceRegister {
 
 	@Autowired
 	private RegisterDAO registerDAO;
+
+	@Autowired
+	private RandomPassGenerator randomPassGenerator;
 
 	public ServiceRegisterImpl() {
 		// System.out.println("created: " + this.getClass().getSimpleName());
@@ -66,29 +63,17 @@ public class ServiceRegisterImpl implements ServiceRegister {
 
 				log.info("all the feilds are valid and ready to save in DB");
 
-			String chars = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
-			String password = "";
-			int length = 8;
+			String decodePassword = this.randomPassGenerator.passGenerator();
+			log.info("random password from randomPassGenerator" + decodePassword);
 
-			Random random = new Random();
-			char[] text = new char[length];
-			for (int i = 0; i < length; i++) {
-				text[i] = chars.charAt(random.nextInt(chars.length()));
-				password += text[i];
-			}
-			log.info("system generated password is ..." + password);
+			BCryptPasswordEncoder toEncoded = new BCryptPasswordEncoder();
+			String passEncoded = toEncoded.encode(decodePassword);
 
-			System.out.println();
-			log.info("Password saved to DB :   " + password);
+			log.info("encoded pass :   " + passEncoded);
 
-			BCryptPasswordEncoder passEncoded = new BCryptPasswordEncoder();
-			String hashedPass = passEncoded.encode(password);
-
-			log.info("encoded pass :   " + hashedPass);
-
-			registerEntity.setPassword(hashedPass);
+			registerEntity.setPassword(passEncoded);
 			registerEntity.setNoOfAttempts(0);
-			registerEntity.setDecodedPass(password);
+			registerEntity.setDecodedPass(decodePassword);
 
 			// to send credentials to the registered mail
 
@@ -100,7 +85,7 @@ public class ServiceRegisterImpl implements ServiceRegister {
 			log.info(mailMessage.getSubject() + ": subject which is been added");
 
 			mailMessage.setText("Dear customer below are the credentials to log in :\n\n" + "User ID" + "       : "
-					+ registerDTO.getUser_id() + "\n\nPassword" + "     : " + password + "\n" + "\t" + "\t"
+					+ registerDTO.getUser_id() + "\n\nPassword" + "     : " + decodePassword + "\n" + "\t" + "\t"
 					+ "(please do not share password with anyone)" + "\n\nMobile No" + "     : "
 					+ registerDTO.getPh_no() + "\n\nCourse Chosen" + "   : " + registerDTO.getCourse());
 			log.info(mailMessage.getText() + ":Deatails which are been sent");
@@ -116,10 +101,10 @@ public class ServiceRegisterImpl implements ServiceRegister {
 			model.addAttribute("email", registerEntity.getEmail());
 			model.addAttribute("ph_no", registerEntity.getPh_no());
 			model.addAttribute("course", registerEntity.getCourse());
-			model.addAttribute("password", hashedPass);
 			model.addAttribute("sent", "Password has been sent to the mail");
 			System.out.println();
-			log.info("passed to entity :" + password);
+			log.info("passed to entity for hashed:" + passEncoded);
+			log.info("passed to entity for normal:" + decodePassword);
 
 			this.registerDAO.saveUser(registerEntity);
 			return "userDetails";
@@ -152,9 +137,6 @@ public class ServiceRegisterImpl implements ServiceRegister {
 
 			log.info("details entered by USER :" + registerDTO);
 			BCryptPasswordEncoder decoder = new BCryptPasswordEncoder();
-
-			String passwordDecoded = decoder.encode(registerDTO.getPassword());
-			log.info("Password from Database  : " + passwordDecoded);
 
 			isPassMatch = decoder.matches(registerDTO.getPassword(), registerEntity.getPassword());
 			log.info("value of isPassMatch in case of invalid email :" + isPassMatch);

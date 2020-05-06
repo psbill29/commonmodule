@@ -127,16 +127,6 @@ a {
 			</div>
 		</div>
 	</div>
-
-	<header class="w3-display-container w3-content w3-wide"
-		style="max-width:1600px;min-width:500px" id="home"> <img
-		class="w3-image" src="/w3images/hamburger.jpg"
-		alt="Hamburger Catering" width="1600" height="800">
-	<div class="w3-display-bottomleft w3-padding-large w3-opacity">
-		<h1 class="w3-xxlarge">X-workz ODC</h1>
-	</div>
-
-	</header>
 	<br>
 	<br>
 	<br>
@@ -155,11 +145,14 @@ a {
 				</tr>
 
 				<tr>
-					<td><input type="submit" value="Reset Password"
+					<td><input type="submit" value="Generate Password"
 						class="registerbtn"></td>
 
 				</tr>
 			</table>
+			<!-- <br>
+			<a href="/com.xworks.commonmodule/reset" method="post"
+				class="w3-bar-item w3-button">Set Password </a> -->
 		</div>
 	</form:form>
 
