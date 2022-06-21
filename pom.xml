@@ -13,7 +13,7 @@
 		<spring.version>4.3.26.RELEASE</spring.version>
 		<lombok.version>1.18.12</lombok.version>
 		<hibernate.version>5.4.12.Final</hibernate.version>
-		<sql.version>8.0.17</sql.version>
+		<sql.version>8.0.28</sql.version>
 		<validator.version>5.4.1.Final</validator.version>
 		<jstl-version>1.2</jstl-version>
 		<servlet-api-version>3.1.0</servlet-api-version>
